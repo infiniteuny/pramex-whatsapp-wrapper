@@ -10,9 +10,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nartos9090/pramex-whatsapp-wrapper"
+    "url": "git+https://github.com/InfiniteUny/pramex-whatsapp-wrapper"
   },
-  "homepage": "https://github.com/nartos9090/pramex-whatsapp-wrapper",
+  "homepage": "https://github.com/InfiniteUny/pramex-whatsapp-wrapper",
   "files": [
     "dist/**/*",
     "credential/**/*"
@@ -23,7 +23,8 @@
   "dependencies": {
     "@adiwajshing/baileys": "^5.0.0",
     "@adiwajshing/keyed-db": "^0.2.4",
-    "pino": "^8.8.0"
+    "pino": "^8.8.0",
+    "qrcode-terminal": "^0.12.0"
   },
   "devDependencies": {
     "@types/node": "^18.7.2",
