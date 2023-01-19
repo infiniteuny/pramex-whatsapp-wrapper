@@ -6,7 +6,7 @@ interface TempCommand {
     middlewares: Middleware[],
 }
 
-class App {
+export class App {
     private commands: TempCommand[] = []
     module: string
 
@@ -26,5 +26,3 @@ class App {
         return this.commands
     }
 }
-
-export default App
