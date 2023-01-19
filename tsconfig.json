@@ -10,5 +10,6 @@
     "src"
   ],
   "exclude": [
-    "credential", "node_modules"]
+    "credential", "node_modules", "example.ts"
+  ]
 }
