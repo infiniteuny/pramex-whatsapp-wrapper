@@ -1,7 +1,9 @@
 import { startSock, handler, App } from './src'
 
+// Create a module
 const appDefault = new App('default')
 
+// Create a command and the handler
 appDefault.set(
     'test',
     {
@@ -10,11 +12,17 @@ appDefault.set(
         hideFromHelp: false,
         disabled: false
     },
-    (s, props) => {
+    (sock, props) => {
+        // Write your code here
         let text = 'reply test'
-        s.sendMessage(props.remoteJid, { text })
+        
+        // Refer to https://github.com/adiwajshing/Baileys how to use the sock
+        sock.sendMessage(props.remoteJid, { text })
     }
 )
 
+// Set the handler to use the module created
 handler.use(appDefault)
+
+// Start sock and pass the handleSock from handler
 const sock = startSock(handler.handleSock)
