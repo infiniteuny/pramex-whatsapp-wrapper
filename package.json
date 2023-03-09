@@ -6,7 +6,8 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "prepare": "npm run build",
-    "build": "tsc --build --clean && tsc"
+    "build": "tsc --build --clean && tsc",
+    "example": "ts-node example.ts"
   },
   "repository": {
     "type": "git",

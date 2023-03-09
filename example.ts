@@ -1,4 +1,5 @@
 import { startSock, handler, App } from './src'
+import {quoteReplyWithTyping, sendMessageWithTyping} from "./src/utils";
 
 // Create a module
 const appDefault = new App('default')
@@ -12,12 +13,12 @@ appDefault.set(
         hideFromHelp: false,
         disabled: false
     },
-    (sock, props) => {
+    async (sock, props) => {
         // Write your code here
         let text = 'reply test'
         
         // Refer to https://github.com/adiwajshing/Baileys how to use the sock
-        sock.sendMessage(props.remoteJid, { text })
+        await quoteReplyWithTyping(sock, props, { text })
     }
 )
 
