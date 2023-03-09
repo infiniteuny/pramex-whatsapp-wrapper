@@ -1,4 +1,4 @@
-import { WASocket } from '@adiwajshing/baileys'
+import {WAMessage, WASocket} from '@adiwajshing/baileys'
 
 export interface Properties {
     command: string,
@@ -9,6 +9,7 @@ export interface Properties {
     groupJid?: string | null,
     textMessage?: string | null
     message: any,
+    msg: WAMessage,
     [key: string]: any
 }
 

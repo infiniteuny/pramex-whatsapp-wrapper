@@ -70,6 +70,7 @@ function handleSock(sock) {
                 groupJid: null,
                 textMessage,
                 message: msg.message,
+                msg,
                 remoteJid: msg.key.remoteJid,
             }
 

@@ -25,11 +25,11 @@ async function sendMessageWithTyping (sock, jid: string, content: AnyMessageCont
 }
 
 async function quoteReply(sock, props: Properties, content: AnyMessageContent, options?: MiscMessageGenerationOptions) {
-    await sock.sendMessage(props.remoteJid, content, { quoted: props.message, ...options })
+    await sock.sendMessage(props.remoteJid, content, { quoted: props.msg, ...options })
 }
 
 async function quoteReplyWithTyping(sock, props: Properties, content: AnyMessageContent, options?: MiscMessageGenerationOptions) {
-    await sendMessageWithTyping(sock, props.remoteJid, content, { quoted: props.message,...options })
+    await sendMessageWithTyping(sock, props.remoteJid, content, { quoted: props.msg,...options })
 }
 
 export {
