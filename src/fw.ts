@@ -70,8 +70,14 @@ function handleSock(sock) {
                 groupJid: null,
                 textMessage,
                 message: msg.message,
+                imageMessage: msg.message.imageMessage || null,
+                audioMessage: msg.message.audioMessage || null,
+                videoMessage: msg.message.videoMessage || null,
+                documentMessage: msg.message.documentMessage || null,
+                stickerMessage: msg.message.stickerMessage || null,
                 msg,
                 remoteJid: msg.key.remoteJid,
+                quotedMessage: msg.message?.extendedTextMessage?.contextInfo?.quotedMessage || null,
             }
 
             if (properties.isGroup) {
