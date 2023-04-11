@@ -34,11 +34,11 @@ export const startSock = async (handler: Function, config?: UserFacingSocketConf
             printQRInTerminal: true,
             auth: state,
             // implement to handle retries
-            getMessage: async key => {
-                return {
-                    conversation: 'hello'
-                }
-            }
+            // getMessage: async key => {
+            //     return {
+            //         conversation: 'hello'
+            //     }
+            // }
         }
     }
     const sock = makeWASocket(config)
