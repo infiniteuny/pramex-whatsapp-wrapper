@@ -1,4 +1,4 @@
-import {AnyMessageContent, delay, MiscMessageGenerationOptions} from "@adiwajshing/baileys";
+import {AnyMessageContent, delay, MiscMessageGenerationOptions} from "@whiskeysockets/baileys";
 import {Properties} from "./interface";
 
 function parseTextMessage (msg) {

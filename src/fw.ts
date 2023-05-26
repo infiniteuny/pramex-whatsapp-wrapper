@@ -2,7 +2,7 @@ import {App} from "./app"
 import {CommandOptions, Middleware, Properties} from "./interface"
 import {findCommand, parseTextMessage} from "./utils"
 import P from 'pino'
-import {AnyMessageContent, MiscMessageGenerationOptions, WASocket} from '@adiwajshing/baileys'
+import {AnyMessageContent, MiscMessageGenerationOptions, WASocket} from '@whiskeysockets/baileys'
 import disabledMiddleware from "./middlewares/disabled"
 
 const logger = P()

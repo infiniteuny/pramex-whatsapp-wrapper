@@ -1,4 +1,4 @@
-import {proto, WAMessage, WASocket} from '@adiwajshing/baileys'
+import {proto, WAMessage, WASocket} from '@whiskeysockets/baileys'
 import IMessage = proto.IMessage;
 import IImageMessage = proto.Message.IImageMessage;
 import IAudioMessage = proto.Message.IAudioMessage;

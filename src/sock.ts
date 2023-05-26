@@ -3,9 +3,9 @@ import makeWASocket, {
     DisconnectReason,
     makeInMemoryStore,
     useMultiFileAuthState,
-} from '@adiwajshing/baileys'
+} from '@whiskeysockets/baileys'
 import logger from "./logger";
-import {UserFacingSocketConfig} from "@adiwajshing/baileys/lib/Types";
+import {UserFacingSocketConfig} from "@whiskeysockets/baileys/lib/Types";
 
 let saveInterval: NodeJS.Timeout
 let state, saveState
