@@ -1,9 +1,10 @@
 import {App} from "./app"
-import {CommandOptions, Middleware, Properties} from "./interface"
+import {Middleware, Properties} from "./interface"
 import {findCommand, parseTextMessage} from "./utils"
 import P from 'pino'
 import {AnyMessageContent, MiscMessageGenerationOptions, WASocket} from '@whiskeysockets/baileys'
 import disabledMiddleware from "./middlewares/disabled"
+import {anomalyDetection} from "./anomalyDetection";
 
 const logger = P()
 
@@ -30,67 +31,71 @@ function handleSock(sock) {
         }
 
         for (const msg of m.messages) {
-            const body = parseTextMessage(msg.message)
-            let command: string = null
-            let middlewares: Middleware[] = null
-            let textMessage: string = null
+            try {
+                const body = parseTextMessage(msg.message)
+                let command: string = null
+                let middlewares: Middleware[] = null
+                let textMessage: string = null
 
-            /**
-             * Split the command from the conversation.
-             * Default use global prefix set above.
-             * When the command exists, get the middleware,
-             * and remove the command from the conversation,
-             * so it has clear text without the command.
-             */
-            if (typeof body === 'string' && body[0] === '/') {
-                const commandEndIndex = body.indexOf(' ')
-                command = body.slice(GLOBAL_PREFIX.length, commandEndIndex < 0 ? body.length : commandEndIndex)
+                /**
+                 * Split the command from the conversation.
+                 * Default use global prefix set above.
+                 * When the command exists, get the middleware,
+                 * and remove the command from the conversation,
+                 * so it has clear text without the command.
+                 */
+                if (typeof body === 'string' && body[0] === '/') {
+                    const commandEndIndex = body.indexOf(' ')
+                    command = body.slice(GLOBAL_PREFIX.length, commandEndIndex < 0 ? body.length : commandEndIndex)
 
-                const ITEM = findCommand(COMMANDS, command)
+                    const ITEM = findCommand(COMMANDS, command)
 
-                if (!ITEM) {
-                    continue
+                    if (!ITEM) {
+                        continue
+                    }
+
+                    middlewares = ITEM.middlewares
+
+                    textMessage = body.replace(GLOBAL_PREFIX + command, '').trim()
+                } else {
+                    return
                 }
 
-                middlewares = ITEM.middlewares
+                /**
+                 * Get the basic properties
+                 */
+                const properties: Properties = {
+                    command,
+                    fromMe: msg.key.fromMe || false,
+                    isGroup: (msg.key.remoteJid || '').endsWith('@g.us') || false,
+                    fromJid: null,
+                    groupJid: null,
+                    textMessage,
+                    message: msg.message,
+                    imageMessage: msg.message.imageMessage || null,
+                    audioMessage: msg.message.audioMessage || null,
+                    videoMessage: msg.message.videoMessage || null,
+                    documentMessage: msg.message.documentMessage || null,
+                    stickerMessage: msg.message.stickerMessage || null,
+                    msg,
+                    remoteJid: msg.key.remoteJid,
+                    quotedMessage: msg.message?.extendedTextMessage?.contextInfo?.quotedMessage || null,
+                }
 
-                textMessage = body.replace(GLOBAL_PREFIX + command, '').trim()
-            } else {
-                return
+                if (properties.isGroup) {
+                    properties.groupJid = msg.key.remoteJid
+                    properties.fromJid = msg.key.participant
+                } else {
+                    properties.fromJid = msg.key.remoteJid
+                }
+
+                /**
+                 * Execute all the middleware
+                 */
+                await handleCommand(middlewares, _sock, properties)
+            } catch (e) {
+                anomalyDetection.add(e)
             }
-
-            /**
-             * Get the basic properties
-             */
-            const properties: Properties = {
-                command,
-                fromMe: msg.key.fromMe || false,
-                isGroup: (msg.key.remoteJid || '').endsWith('@g.us') || false,
-                fromJid: null,
-                groupJid: null,
-                textMessage,
-                message: msg.message,
-                imageMessage: msg.message.imageMessage || null,
-                audioMessage: msg.message.audioMessage || null,
-                videoMessage: msg.message.videoMessage || null,
-                documentMessage: msg.message.documentMessage || null,
-                stickerMessage: msg.message.stickerMessage || null,
-                msg,
-                remoteJid: msg.key.remoteJid,
-                quotedMessage: msg.message?.extendedTextMessage?.contextInfo?.quotedMessage || null,
-            }
-
-            if (properties.isGroup) {
-                properties.groupJid = msg.key.remoteJid
-                properties.fromJid = msg.key.participant
-            } else {
-                properties.fromJid = msg.key.remoteJid
-            }
-
-            /**
-             * Execute all the middleware
-             */
-            await handleCommand(middlewares, _sock, properties)
         }
     })
 
